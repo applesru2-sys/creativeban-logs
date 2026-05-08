@@ -1,6 +1,7 @@
 const { Client, WebhookClient, MessageEmbed } = require('discord.js-selfbot-v13');
 const { createClient } = require('@supabase/supabase-js');
 const http = require('http');
+const WebSocket = require('ws'); // <-- ДОБАВИЛИ ЭТУ СТРОКУ
 
 // --- НАСТРОЙКИ ---
 const TOKEN = process.env.TOKEN; // Берется из настроек Bothost
@@ -8,10 +9,15 @@ const WEBHOOK_URL = 'https://discord.com/api/webhooks/1501843778955378698/jL4VE6
 const SUPABASE_URL = 'https://vsmyfpdysryespiwzqds.supabase.co'; // <-- ВСТАВЬ СЮДА ССЫЛКУ
 const SUPABASE_KEY = 'sb_secret_l6f6Hlv-SHQ1XOp3MpRGMw_KNTXcV6k'; // <-- ВСТАВЬ СЮДА КЛЮЧ
 
+
 const SOURCE_CHANNEL_ID = '1009860471328874617';
 
-if (!TOKEN || !WEBHOOK_URL || !SUPABASE_URL || !SUPABASE_KEY) {
-    console.error("❌ ОШИБКА: Не указаны ENV переменные (TOKEN, WEBHOOK_URL, SUPABASE_URL, SUPABASE_KEY)!");
+if (!TOKEN) {
+    console.error("❌ ОШИБКА: Не указан TOKEN в переменных окружения Bothost!");
+    process.exit(1);
+}
+if (WEBHOOK_URL === 'ТВОЙ_ВЕБХУК_URL') {
+    console.error("❌ ОШИБКА: Ты забыл вставить ключи прямо в код (строки 8-10)!");
     process.exit(1);
 }
 
@@ -19,8 +25,11 @@ const ACCENT_COLOR = '#2B2D31';
 const client = new Client();
 const webhook = new WebhookClient({ url: WEBHOOK_URL });
 
-// Подключаем Supabase
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+// Подключаем Supabase с поддержкой WebSocket
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { 
+    auth: { persistSession: false },
+    global: { WebSocket: WebSocket } // <-- ПЕРЕДАЛИ WEBSOCKET СЮДА
+});
 
 const activeTimers = new Map();
 const processedIssues = new Set();
