@@ -2,11 +2,11 @@ const { Client, WebhookClient, MessageEmbed } = require('discord.js-selfbot-v13'
 const { createClient } = require('@supabase/supabase-js');
 const http = require('http');
 
-// --- НАСТРОЙКИ ХОСТИНГА (Берем из ENV) ---
-const TOKEN = process.env.TOKEN;
-const WEBHOOK_URL = process.env.WEBHOOK_URL;
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_KEY;
+// --- НАСТРОЙКИ ---
+const TOKEN = process.env.TOKEN; // Берется из настроек Bothost
+const WEBHOOK_URL = 'https://discord.com/api/webhooks/1501843778955378698/jL4VE6ryXXU2ElBIo6ohhk48sHiB3QlPIWnU2vzrUf2GulgkK9_ex7uOjyXNEC2wZCGH'; // <-- ВСТАВЬ СЮДА ССЫЛКУ
+const SUPABASE_URL = 'https://vsmyfpdysryespiwzqds.supabase.co'; // <-- ВСТАВЬ СЮДА ССЫЛКУ
+const SUPABASE_KEY = 'sb_secret_l6f6Hlv-SHQ1XOp3MpRGMw_KNTXcV6k'; // <-- ВСТАВЬ СЮДА КЛЮЧ
 
 const SOURCE_CHANNEL_ID = '1009860471328874617';
 
