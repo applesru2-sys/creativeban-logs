@@ -25,10 +25,10 @@ const ACCENT_COLOR = '#2B2D31';
 const client = new Client();
 const webhook = new WebhookClient({ url: WEBHOOK_URL });
 
-// Подключаем Supabase с поддержкой WebSocket
+// Подключаем Supabase с поддержкой WebSocket (НОВЫЙ ФОРМАТ)
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { 
     auth: { persistSession: false },
-    global: { WebSocket: WebSocket } // <-- ПЕРЕДАЛИ WEBSOCKET СЮДА
+    realtime: { transport: WebSocket } // <-- ИЗМЕНИЛИ ЭТУ СТРОКУ
 });
 
 const activeTimers = new Map();
