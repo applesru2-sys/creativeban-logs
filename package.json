@@ -2,14 +2,12 @@
   "name": "creativeban-bot",
   "version": "1.0.0",
   "description": "Bot for Bothost",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
-    "start": "ts-node index.ts"
+    "start": "node index.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.43.0",
-    "discord.js-selfbot-v13": "^3.1.2",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.4.5"
+    "discord.js-selfbot-v13": "^3.1.2"
   }
 }
