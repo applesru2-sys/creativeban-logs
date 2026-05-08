@@ -9,6 +9,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.43.0",
     "discord.js-selfbot-v13": "^3.1.2",
-    "debug": "^4.3.4"
+    "debug": "^4.3.4",
+    "ws": "^8.17.0"
   }
 }
