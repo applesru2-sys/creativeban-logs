@@ -13,10 +13,6 @@ if (!TOKEN) {
     console.error("Не указан TOKEN в переменных окружения Bothost!");
     process.exit(1);
 }
-if (WEBHOOK_URL === 'ТВОЙ_ВЕБХУК_URL') {
-    console.error(" вставить ключи в код (строки 6-8)!");
-    process.exit(1);
-}
 
 const ACCENT_COLOR = '#2B2D31';
 const client = new Client();
