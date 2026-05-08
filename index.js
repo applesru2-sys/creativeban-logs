@@ -1,23 +1,21 @@
 const { Client, WebhookClient, MessageEmbed } = require('discord.js-selfbot-v13');
 const { createClient } = require('@supabase/supabase-js');
 const http = require('http');
-const WebSocket = require('ws'); // <-- ДОБАВИЛИ ЭТУ СТРОКУ
+const WebSocket = require('ws');
 
-// --- НАСТРОЙКИ ---
-const TOKEN = process.env.TOKEN; // Берется из настроек Bothost
-const WEBHOOK_URL = 'https://discord.com/api/webhooks/1501843778955378698/jL4VE6ryXXU2ElBIo6ohhk48sHiB3QlPIWnU2vzrUf2GulgkK9_ex7uOjyXNEC2wZCGH'; // <-- ВСТАВЬ СЮДА ССЫЛКУ
-const SUPABASE_URL = 'https://vsmyfpdysryespiwzqds.supabase.co'; // <-- ВСТАВЬ СЮДА ССЫЛКУ
-const SUPABASE_KEY = 'sb_secret_l6f6Hlv-SHQ1XOp3MpRGMw_KNTXcV6k'; // <-- ВСТАВЬ СЮДА КЛЮЧ
-
+const TOKEN = process.env.TOKEN; 
+const WEBHOOK_URL = 'https://discord.com/api/webhooks/1501843778955378698/jL4VE6ryXXU2ElBIo6ohhk48sHiB3QlPIWnU2vzrUf2GulgkK9_ex7uOjyXNEC2wZCGH'; 
+const SUPABASE_URL = 'https://vsmyfpdysryespiwzqds.supabase.co'; 
+const SUPABASE_KEY = 'sb_secret_l6f6Hlv-SHQ1XOp3MpRGMw_KNTXcV6k'; 
 
 const SOURCE_CHANNEL_ID = '1009860471328874617';
 
 if (!TOKEN) {
-    console.error("❌ ОШИБКА: Не указан TOKEN в переменных окружения Bothost!");
+    console.error("ошибка токена");
     process.exit(1);
 }
 if (WEBHOOK_URL === 'ТВОЙ_ВЕБХУК_URL') {
-    console.error("❌ ОШИБКА: Ты забыл вставить ключи прямо в код (строки 8-10)!");
+    console.error("ошибка ключей бд");
     process.exit(1);
 }
 
@@ -25,24 +23,23 @@ const ACCENT_COLOR = '#2B2D31';
 const client = new Client();
 const webhook = new WebhookClient({ url: WEBHOOK_URL });
 
-// Подключаем Supabase с поддержкой WebSocket (НОВЫЙ ФОРМАТ)
+// Подключение Supabase с поддержкой WebSocket 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY, { 
     auth: { persistSession: false },
-    realtime: { transport: WebSocket } // <-- ИЗМЕНИЛИ ЭТУ СТРОКУ
+    realtime: { transport: WebSocket } 
 });
 
 const activeTimers = new Map();
 const processedIssues = new Set();
 const processedRemovals = new Set();
 
-// --- МИНИ ВЕБ-СЕРВЕР (Защита от выключения на Bothost) ---
+// --- МИНИ ВЕБ-СЕРВЕР 
 const PORT = process.env.PORT || 3000;
 http.createServer((req, res) => {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Creativeban Bot is online!\n');
-}).listen(PORT, () => console.log(`🌐 Веб-сервер запущен на порту ${PORT}`));
+    res.end('Creativeban  is online!\n');
+}).listen(PORT, () => console.log(` Веб-сервер запущен на порту ${PORT}`));
 
-// --- УТИЛИТЫ ---
 function parseDurationToMs(durationStr) {
     const match = durationStr.match(/(\d+)\s*(д|ч|м|с)/i);
     if (!match) return 0;
@@ -85,7 +82,7 @@ async function sendStyledEmbed(title, lines, moderatorMention, avatarUrl) {
     await webhook.send({ embeds: [embed] }).catch(console.error);
 }
 
-// --- ЛОГИКА ТАЙМЕРОВ (АВТО-РАЗБАН) ---
+//  СБРОС ТАЙМЕРОВ (АВТО-РАЗБАН) ---
 async function scheduleUnban(banData) {
     const targetId = banData.target_id;
     const endDate = new Date(banData.end_date);
@@ -121,11 +118,11 @@ async function executeUnban(banData) {
 async function loadBansOnStartup() {
     const { data: bans, error } = await supabase.from('active_bans').select('*');
     if (error) {
-        console.error("❌ Ошибка загрузки банов из БД:", error);
+        console.error("Ошибка загрузки банов из БД:", error);
         return;
     }
     
-    console.log(`📥 Загружено активных банов из базы: ${bans.length}`);
+    console.log(`Загружено активных банов из базы: ${bans.length}`);
     for (const ban of bans) {
         scheduleUnban(ban); 
     }
@@ -161,7 +158,7 @@ async function handleBanMessage(message) {
 
             processedIssues.add(message.id);
             const avatarUrl = await getModeratorAvatar(moderator);
-            console.log(`[ЗАПИСЬ] Выдача бана: Кому: ${target} | Модер: ${moderator} | Срок: ${durationStr}`);
+            console.log(`[ЗАПИСЬ] Выдача бана: Кому: ${target} | Креатив: ${moderator} | Срок: ${durationStr}`);
 
             const durationMs = parseDurationToMs(durationStr);
             const startDate = new Date();
@@ -238,7 +235,7 @@ async function handleBanMessage(message) {
 }
 
 client.on('ready', async () => {
-    console.log(`🚀 Селф-бот запущен на Bothost (${client.user?.tag}).`);
+    console.log(`Селф-бот запущен (${client.user?.tag}).`);
     await loadBansOnStartup(); 
 });
 
