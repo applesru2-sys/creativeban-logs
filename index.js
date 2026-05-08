@@ -57,10 +57,12 @@ function parseDurationToMs(durationStr) {
 }
 
 function formatDate(date) {
-    const pad = (n) => n.toString().padStart(2, '0');
-    return `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}, ${pad(date.getHours())}:${pad(date.getMinutes())}`;
-}
+    const mskString = date.toLocaleString('en-US', { timeZone: 'Europe/Moscow' });
+    const mskDate = new Date(mskString);
 
+    const pad = (n) => n.toString().padStart(2, '0');
+    return `${pad(mskDate.getDate())}.${pad(mskDate.getMonth() + 1)}.${mskDate.getFullYear()}, ${pad(mskDate.getHours())}:${pad(mskDate.getMinutes())}`;
+}
 function extractIdFromMention(mention) {
     const match = mention.match(/<@!?(\d+)>/);
     return match ? (match[1] || mention) : mention;
